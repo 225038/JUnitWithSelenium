@@ -5,29 +5,33 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 class Util {
     private String baseUrl;
+    private String email = "testAcc555@yandex.ru";
+    private String name = "testAcc555";
 
     String getBaseUrl() {
         return baseUrl;
     }
 
-    String getCorrectLogin() {
-        return "pukoh@mail.ru";
+    String getCorrectEmail() {
+        return email;
+    }
+
+    String getCorrectName() {
+        return name;
     }
 
     String getCorrectPassword() {
-        return "8FBN7j3Jh,fmk3Q";
+        return "Test1234";
     }
 
     Util() {
         System.setProperty("webdriver.gecko.driver", "/usr/local/bin/geckodriver");
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
-        baseUrl = "https://www.fiverr.com//";
+        baseUrl = "https://www.fiverr.com/";
     }
 
     void prepare(WebDriver driver) {
@@ -48,8 +52,10 @@ class Util {
     }
 
     String getRandomString(int length) {
-        byte[] array = new byte[length];
-        new Random().nextBytes(array);
-        return new String(array, StandardCharsets.UTF_8);
+        String symbols = "qwertytestrandomhelloworld";
+        StringBuilder randString = new StringBuilder();
+        for (int i = 0; i < length; i++)
+            randString.append(symbols.charAt((int) (Math.random() * symbols.length())));
+        return randString.toString();
     }
 }
