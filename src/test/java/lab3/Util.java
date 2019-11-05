@@ -44,11 +44,25 @@ class Util {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
 
         element.sendKeys(Keys.ENTER);
+//        element.sendKeys(MouseButton.PRIMARY);
     }
 
     void waitPresent(WebDriver driver, By selector) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+    }
+
+    void doLogin(WebDriver driver, String login, String password) throws InterruptedException {
+//        driver.findElement(By.xpath("(//a[contains(text(),'Sign In')])[7]")).click();
+        driver.findElement(By.xpath("//div[@id='main-wrapper-header']/header/div/nav/ul/li[3]/a")).click();
+//        tryClick(driver, By.xpath("//div[@id='main-wrapper-header']/header/div/nav/ul/li[3]/a"));
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//input[@name='user_session[login]']")).sendKeys(login);
+        driver.findElement(By.xpath("//input[@name='user_session[password]']")).sendKeys(password);
+        driver.findElement(By.className("chk-img")).click();
+        Thread.sleep(500);
+        tryClick(driver, By.xpath("//input[@name='commit']"));
+        Thread.sleep(1000);
     }
 
     String getRandomString(int length) {

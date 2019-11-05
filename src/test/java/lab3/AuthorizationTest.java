@@ -17,7 +17,7 @@ public class AuthorizationTest {
     private FirefoxDriver firefoxDriver;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         util = new Util();
         FirefoxOptions opts = new FirefoxOptions();
         opts.addArguments("-private");
@@ -39,17 +39,6 @@ public class AuthorizationTest {
 //        chromeDriver.quit();
     }
 
-    private void doLogin(WebDriver driver, String login, String password) throws InterruptedException {
-        util.tryClick(driver, By.xpath("(//a[contains(text(),'Sign In')])[7]"));
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//input[@name='user_session[login]']")).sendKeys(login);
-        driver.findElement(By.xpath("//input[@name='user_session[password]']")).sendKeys(password);
-        driver.findElement(By.className("chk-img")).click();
-        Thread.sleep(500);
-        util.tryClick(driver, By.xpath("//input[@name='commit']"));
-        Thread.sleep(1000);
-    }
-
     private void doLogOut(WebDriver driver) throws InterruptedException {
         Thread.sleep(3000);
         driver.findElement(By.className("fit-avatar-image")).click();
@@ -60,7 +49,7 @@ public class AuthorizationTest {
 
     @Test
     public void successfulEmailLogin() throws Exception {
-        doLogin(firefoxDriver, util.getCorrectEmail(), util.getCorrectPassword());
+        util.doLogin(firefoxDriver, util.getCorrectEmail(), util.getCorrectPassword());
         firefoxDriver.findElement(By.xpath("//span[@class='fit-avatar-image']"));
         Thread.sleep(500);
 
@@ -71,7 +60,7 @@ public class AuthorizationTest {
 
     @Test
     public void successfulNameLogin() throws Exception {
-        doLogin(firefoxDriver, util.getCorrectName(), util.getCorrectPassword());
+        util.doLogin(firefoxDriver, util.getCorrectName(), util.getCorrectPassword());
         firefoxDriver.findElement(By.xpath("//span[@class='fit-avatar-image']"));
         Thread.sleep(500);
 
@@ -83,7 +72,7 @@ public class AuthorizationTest {
 
     @Test
     public void wrongPasswordLogin() throws InterruptedException {
-        doLogin(firefoxDriver, util.getCorrectEmail(), "wrong_pass");
+        util.doLogin(firefoxDriver, util.getCorrectEmail(), "wrong_pass");
         firefoxDriver.findElement(By.xpath("//p[contains(.,'Wrong username or password, please try again.')]"));
         Thread.sleep(500);
 
@@ -95,7 +84,7 @@ public class AuthorizationTest {
 
     @Test
     public void wrongLoginLogin() throws InterruptedException {
-        doLogin(firefoxDriver, "wrong_login", util.getCorrectPassword());
+        util.doLogin(firefoxDriver, "wrong_login", util.getCorrectPassword());
         firefoxDriver.findElement(By.xpath("//p[contains(.,'Wrong username or password, please try again.')]"));
         Thread.sleep(500);
 
@@ -106,7 +95,7 @@ public class AuthorizationTest {
 
     @Test
     public void logOut() throws Exception {
-        doLogin(firefoxDriver, util.getCorrectEmail(), util.getCorrectPassword());
+        util.doLogin(firefoxDriver, util.getCorrectEmail(), util.getCorrectPassword());
         doLogOut(firefoxDriver);
         Assert.assertEquals("https://www.fiverr.com/", firefoxDriver.getCurrentUrl());
         Thread.sleep(500);
